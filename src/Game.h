@@ -66,6 +66,15 @@ public:
 	void changeSceneState(SceneState newState);
 	void quit();
 
+
+	void resetFruitTally();
+	void resetAll();
+	void checkJackPot();
+	void showWinMessage();
+	void showLossMessage();
+	int checkRange(int value, int lowerBounds, int upperBounds);
+	std::string* Reels();
+
 private:
 	Game();
 	~Game();
@@ -87,116 +96,15 @@ private:
 
 	Scene* m_currentScene;
 	SceneState m_currentSceneState;
+
+	//Slot Machine Stuff
+	float playerMoney = 1000.00f, winnings = 0.00f;
+	int jackpot = 5000, turn = 0, playerBet = 0,
+winNumber = 0, lossNumber = 0, winRatio = 0, grapes = 0, bananas = 0, oranges = 0, cherries = 0, bars = 0, bells = 0, sevens = 0, blanks = 0;
+std::string fruits = "";
+	//something spinResult
 };
 
 typedef Game TheGame;
 
 #endif /* defined (__Game__) */
-
-/*
-Josh's Frame Sketchboard:
-
-W = Generic Weapon
-F = Flamethrower
-C = Cannon
-M = Missile
-B = Body
-I = Indestructible Body
-E = Blank (Empty)
-
-Player:
-B	B	W	E
-B	B	B	W
-B	B	W	E
-
-Enemy 1:
-B
-
-Enemy 2:
-B	B	B
-M	B	B
-B	B	B
-
-Enemy 3:
-
-Enemy 4:
-
-Enemy 5:
-
-Enemy 6:
-
-Boss 1:
-
-Boss 2 (Multistage):
-
-NOTE: All Level 3 bosses use identical size-scaling
-Level 3 Boss 1: Blaster Skiff
-E	M	M	I	E	E	E	E
-E	M	M	I	E	E	E	E
-E	M	M	I	I	E	E	E
-E	M	M	I	I	E	E	E
-E	M	M	I	I	I	E	E
-E	M	M	I	I	I	E	E
-E	M	M	I	I	I	I	E
-B	I	I	I	I	I	I	I
-B	I	I	I	I	I	I	I
-E	M	M	I	I	I	E	E
-E	M	M	I	I	I	I	E
-E	M	M	I	I	E	E	E
-E	M	M	I	I	E	E	E
-E	M	M	I	E	E	E	E
-E	M	M	I	E	E	E	E
-
-Level 3 Boss 2: Firebrand
-M	F	F	F	F	F	E	E
-M	B	B	B	B	B	B	E
-F	B	B	B	B	B	B	E
-C	B	B	B	B	B	B	E
-C	B	B	B	B	B	B	B
-C	B	B	B	B	B	B	B
-C	B	B	B	B	B	B	B
-C	B	B	B	B	B	B	B
-C	B	B	B	B	B	B	E
-F	B	B	B	B	B	B	E
-M	B	B	B	B	B	B	E
-M	F	F	F	F	F	E	E
-
-Level 3 Boss 3: Triple Barge
-E	W	W	W	W	E
-W	B	B	B	B	W
-W	B	B	B	B	W
-W	B	B	B	B	W
-W	B	B	B	B	W
-E	W	W	W	W	E
-
-Level 3 Boss 4: Cannonlord
-E	C	B	B	C	B	B	C	E
-C	B	B	B	B	B	B	B	C
-B	B	B	B	B	B	B	B	B
-B	B	B	B	B	B	B	B	B
-C	B	B	B	B	B	B	B	C
-E	C	B	B	C	B	B	C	E
-
-Level 3 Boss 5 (Final Boss): Deathcage
-NOTE: Deathcage is as tall as the screen
-NOTE 2: Deathcage's body expands off to the right, but since that part of its body is unhittable, its frame is remaining this size to save on memory
-I	B	B	B	B	B	B	B	B	B	B	B	B	B	I	E	I
-M	C	C	M	C	C	M	C	C	M	C	C	M	C	B	I	I
-E	E	E	E	E	E	E	E	E	E	E	E	E	E	C	B	I
-E	E	E	E	E	E	E	E	E	E	E	E	E	E	C	B	I
-E	E	E	E	E	E	E	E	E	E	E	E	E	E	M	B	I
-E	E	E	E	E	E	E	E	E	E	E	E	E	E	C	B	I
-E	E	E	E	E	E	E	E	E	E	E	E	E	E	C	B	I
-E	E	E	E	E	E	E	E	E	E	E	E	E	E	M	B	I
-E	E	E	E	E	E	E	E	E	E	E	E	E	E	C	B	I
-E	E	E	E	E	E	E	E	E	E	E	E	E	E	C	B	I
-E	E	E	E	E	E	E	E	E	E	E	E	E	E	M	B	I
-E	E	E	E	E	E	E	E	E	E	E	E	E	E	C	B	I
-E	E	E	E	E	E	E	E	E	E	E	E	E	E	C	B	I
-E	E	E	E	E	E	E	E	E	E	E	E	E	E	M	B	I
-E	E	E	E	E	E	E	E	E	E	E	E	E	E	C	B	I
-E	E	E	E	E	E	E	E	E	E	E	E	E	E	C	B	I
-M	C	C	M	C	C	M	C	C	M	C	C	M	C	B	I	I
-I	B	B	B	B	B	B	B	B	B	B	B	B	B	I	E	I
-
-*/

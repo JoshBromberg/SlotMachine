@@ -163,6 +163,105 @@ void Game::quit()
 	m_bRunning = false;
 }
 
+void Game::resetFruitTally()
+{
+	grapes = 0;
+	bananas = 0;
+	oranges = 0;
+	cherries = 0;
+	bars = 0;
+	bells = 0;
+	sevens = 0;
+	blanks = 0;
+}
+
+void Game::resetAll()
+{
+	playerMoney = 1000;
+	winnings = 0;
+	jackpot = 5000;
+	turn = 0;
+	playerBet = 0;
+	winNumber = 0;
+	lossNumber = 0;
+	winRatio = 0;
+}
+
+void Game::checkJackPot()
+{
+	int jackPotTry = floor(rand() * 51 + 1);
+	int jackPotWin = floor(rand() * 51 + 1);
+	if (jackPotTry == jackPotWin) {
+		//TODO: Code to alert player
+		playerMoney += jackpot;
+		jackpot = 1000;
+	}
+}
+
+void Game::showWinMessage()
+{
+	playerMoney += winnings;
+	//Inform Player
+	resetFruitTally();
+	checkJackPot();
+}
+
+void Game::showLossMessage()
+{
+	playerMoney -= playerBet;
+	//inform player
+	resetFruitTally();
+}
+
+int Game::checkRange(int value, int lowerBounds, int upperBounds)
+{
+	return value;// >= lowerBounds && value <= upperBounds;
+}
+
+std::string* Game::Reels()
+{
+	std::string betLine[3] = { " ", " ", " " };
+	int outCome[3] = { 0,0,0 };
+	for (int spin = 0; spin < 3; ++spin) {		
+		outCome[spin] = floor((rand() * 65) + 1);
+		switch (outCome[spin]) {
+		case checkRange(outCome[spin], 1, 27):  // 41.5% probability
+			betLine[spin] = "blank";
+			blanks++;
+			break;
+		case checkRange(outCome[spin], 28, 37): // 15.4% probability
+			betLine[spin] = "Grapes";
+			grapes++;
+			break;
+		case checkRange(outCome[spin], 38, 46): // 13.8% probability
+			betLine[spin] = "Banana";
+			bananas++;
+			break;
+		case checkRange(outCome[spin], 47, 54): // 12.3% probability
+			betLine[spin] = "Orange";
+			oranges++;
+			break;
+		case checkRange(outCome[spin], 55, 59): //  7.7% probability
+			betLine[spin] = "Cherry";
+			cherries++;
+			break;
+		case checkRange(outCome[spin], 60, 62): //  4.6% probability
+			betLine[spin] = "Bar";
+			bars++;
+			break;
+		case checkRange(outCome[spin], 63, 64): //  3.1% probability
+			betLine[spin] = "Bell";
+			bells++;
+			break;
+		case checkRange(outCome[spin], 65, 65): //  1.5% probability
+			betLine[spin] = "Seven";
+			sevens++;
+			break;
+		}
+	}
+	return betLine;
+}
+
 void Game::render()
 {
 	SDL_RenderClear(m_pRenderer); // clear the renderer to the draw colour

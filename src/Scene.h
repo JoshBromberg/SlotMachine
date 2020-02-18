@@ -8,14 +8,7 @@
 
 #include "GameObject.h"
 
-enum SceneState
-{
-	NO_SCENE = -1,
-	START_SCENE,
-	PLAY_SCENE,
-	END_SCENE,
-	NUM_OF_SCENES
-};
+#include "SceneState.h"
 
 class Scene : public GameObject
 {

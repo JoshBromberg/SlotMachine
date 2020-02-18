@@ -64,6 +64,8 @@ private:
 	std::unordered_map<std::string, SDL_Texture*> m_textureMap;
 
 	static TextureManager* s_pInstance;
+
+	bool m_textureExists(std::string id);
 };
 
 typedef TextureManager TheTextureManager;

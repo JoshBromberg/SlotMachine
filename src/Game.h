@@ -23,7 +23,7 @@
 
 // Scenes
 #include "StartScene.h"
-#include "PlayScene.h"
+#include "Level1Scene.h"
 #include "EndScene.h"
 
 class Game
@@ -33,7 +33,7 @@ public:
 
 	static Game* Instance()
 	{
-		if (s_pInstance == 0)
+		if (s_pInstance == nullptr)
 		{
 			s_pInstance = new Game();
 			return s_pInstance;
@@ -66,14 +66,7 @@ public:
 	void changeSceneState(SceneState newState);
 	void quit();
 
-
-	void resetFruitTally();
-	void resetAll();
-	void checkJackPot();
-	void showWinMessage();
-	void showLossMessage();
-	int checkRange(int value, int lowerBounds, int upperBounds);
-	std::string* Reels();
+	Level1Scene* getScene();
 
 private:
 	Game();
@@ -94,17 +87,12 @@ private:
 
 	Uint32 m_frames;
 
+	// Scene Data Members
 	Scene* m_currentScene;
 	SceneState m_currentSceneState;
-
-	//Slot Machine Stuff
-	float playerMoney = 1000.00f, winnings = 0.00f;
-	int jackpot = 5000, turn = 0, playerBet = 0,
-winNumber = 0, lossNumber = 0, winRatio = 0, grapes = 0, bananas = 0, oranges = 0, cherries = 0, bars = 0, bells = 0, sevens = 0, blanks = 0;
-std::string fruits = "";
-	//something spinResult
 };
 
 typedef Game TheGame;
 
 #endif /* defined (__Game__) */
+

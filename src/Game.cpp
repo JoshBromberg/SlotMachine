@@ -2,7 +2,6 @@
 #include <ctime>
 #include "GLM/gtx/string_cast.hpp"
 #include <algorithm>
-#include "TileComparators.h"
 #include <iomanip>
 
 
@@ -41,13 +40,13 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
 
 		// if window creation successful create our renderer
-		if (m_pWindow != 0)
+		if (m_pWindow != nullptr)
 		{
 			std::cout << "window creation success" << std::endl;
 			m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 
-			if (m_pRenderer != 0) // render init success
+			if (m_pRenderer != nullptr) // render init success
 			{
 				std::cout << "renderer creation success" << std::endl;
 				SDL_SetRenderDrawColor(m_pRenderer, 255, 255, 255, 255);
@@ -123,7 +122,8 @@ Uint32 Game::getFrames()
 void Game::changeSceneState(SceneState newState)
 {
 	if (newState != m_currentSceneState) {
-		
+
+		// if this is not the first time we're rendering a new scene
 		if (m_currentSceneState != SceneState::NO_SCENE) 
 		{
 			m_currentScene->clean();
@@ -142,8 +142,8 @@ void Game::changeSceneState(SceneState newState)
 			m_currentScene = new StartScene();
 			std::cout << "start scene activated" << std::endl;
 			break;
-		case SceneState::PLAY_SCENE:
-			m_currentScene = new PlayScene();
+		case SceneState::LEVEL1_SCENE:
+			m_currentScene = new Level1Scene();
 			std::cout << "play scene activated" << std::endl;
 			break;
 		case SceneState::END_SCENE:
@@ -163,103 +163,10 @@ void Game::quit()
 	m_bRunning = false;
 }
 
-void Game::resetFruitTally()
+Level1Scene* Game::getScene()
 {
-	grapes = 0;
-	bananas = 0;
-	oranges = 0;
-	cherries = 0;
-	bars = 0;
-	bells = 0;
-	sevens = 0;
-	blanks = 0;
-}
-
-void Game::resetAll()
-{
-	playerMoney = 1000;
-	winnings = 0;
-	jackpot = 5000;
-	turn = 0;
-	playerBet = 0;
-	winNumber = 0;
-	lossNumber = 0;
-	winRatio = 0;
-}
-
-void Game::checkJackPot()
-{
-	int jackPotTry = floor(rand() * 51 + 1);
-	int jackPotWin = floor(rand() * 51 + 1);
-	if (jackPotTry == jackPotWin) {
-		//TODO: Code to alert player
-		playerMoney += jackpot;
-		jackpot = 1000;
-	}
-}
-
-void Game::showWinMessage()
-{
-	playerMoney += winnings;
-	//Inform Player
-	resetFruitTally();
-	checkJackPot();
-}
-
-void Game::showLossMessage()
-{
-	playerMoney -= playerBet;
-	//inform player
-	resetFruitTally();
-}
-
-int Game::checkRange(int value, int lowerBounds, int upperBounds)
-{
-	return value;// >= lowerBounds && value <= upperBounds;
-}
-
-std::string* Game::Reels()
-{
-	std::string betLine[3] = { " ", " ", " " };
-	int outCome[3] = { 0,0,0 };
-	for (int spin = 0; spin < 3; ++spin) {		
-		outCome[spin] = floor((rand() * 65) + 1);
-		switch (outCome[spin]) {
-		case checkRange(outCome[spin], 1, 27):  // 41.5% probability
-			betLine[spin] = "blank";
-			blanks++;
-			break;
-		case checkRange(outCome[spin], 28, 37): // 15.4% probability
-			betLine[spin] = "Grapes";
-			grapes++;
-			break;
-		case checkRange(outCome[spin], 38, 46): // 13.8% probability
-			betLine[spin] = "Banana";
-			bananas++;
-			break;
-		case checkRange(outCome[spin], 47, 54): // 12.3% probability
-			betLine[spin] = "Orange";
-			oranges++;
-			break;
-		case checkRange(outCome[spin], 55, 59): //  7.7% probability
-			betLine[spin] = "Cherry";
-			cherries++;
-			break;
-		case checkRange(outCome[spin], 60, 62): //  4.6% probability
-			betLine[spin] = "Bar";
-			bars++;
-			break;
-		case checkRange(outCome[spin], 63, 64): //  3.1% probability
-			betLine[spin] = "Bell";
-			bells++;
-			break;
-		case checkRange(outCome[spin], 65, 65): //  1.5% probability
-			betLine[spin] = "Seven";
-			sevens++;
-			break;
-		}
-	}
-	return betLine;
+	//if (typeid(m_currentScene) == typeid(Level1Scene*))
+		return (Level1Scene*)m_currentScene;
 }
 
 void Game::render()
@@ -298,7 +205,7 @@ void Game::handleEvents()
 	m_currentScene->handleEvents();
 
 	SDL_Event event;
-	if (SDL_PollEvent(&event))
+	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
 		{

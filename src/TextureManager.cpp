@@ -10,8 +10,19 @@ TextureManager::~TextureManager()
 {
 }
 
+bool TextureManager::m_textureExists(std::string id)
+{
+	return m_textureMap.find(id) != m_textureMap.end();
+}
+
 bool TextureManager::load(std::string fileName, std::string id, SDL_Renderer * pRenderer)
 {
+	// check to see if texture does not already exist
+	if (m_textureExists(id))
+	{
+		return true;
+	}
+	
 	SDL_Surface* pTempSurface = IMG_Load(fileName.c_str());
 
 	if (pTempSurface == 0)
